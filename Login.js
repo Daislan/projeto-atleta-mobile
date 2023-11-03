@@ -7,11 +7,11 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (username === 'usuariodetest' && password === 'senhadetest') {
+    if (username.trim() !== '' && password.trim() !== '') {
       navigation.navigate('Home');
-    } else {
-      alert('Credenciais inválidas. Tente novamente.');
-    }
+       } else {
+         alert('Preencha ambos os campos de nome de usuário e senha.');
+       }   
   };
 
   const styles = StyleSheet.create({
