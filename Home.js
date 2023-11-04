@@ -35,18 +35,17 @@ export default function PesquisarAtletas({ navigation }) {
       padding: 16,
     },
     input: {
-      borderWidth: 1,
-      borderColor: '#D7D7D7',
-      borderRadius: 4,
+      backgroundColor: 'white',
+      borderTopLeftRadius: 6,
+      borderBottomLeftRadius: 6,
       height: 46,
-      padding: 12,
-      marginTop: 12,
+      padding: 14,
+      marginTop: 16,
       marginBottom: 16,
-      marginRight: 12,
       flex: 1,
     },
     title: {
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: 'bold',
     },
     cardAtleta: {
@@ -77,8 +76,9 @@ export default function PesquisarAtletas({ navigation }) {
     buttonBusca: {
       backgroundColor: '#1BC286',
       alignItems: 'center',
-      padding: 14,
-      borderRadius: 6,
+      padding: 13,
+      borderTopRightRadius: 6,
+      borderBottomRightRadius: 6,
     },
   });
 
