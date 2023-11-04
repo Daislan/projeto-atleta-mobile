@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Button, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 
 export default function PesquisarAtletas({ navigation }) {
@@ -12,7 +12,7 @@ export default function PesquisarAtletas({ navigation }) {
 
   const buscarAtletas = async () => {
     try {
-      const apiUrl = 'https://apiv3.apifootball.com/?action=get_players&player_name=' + textoBusca + '&APIkey=23a2495a633253850a9ad8999dd626eb7639663230f50f483ed40b33ea5ede3c';
+      const apiUrl = 'https://apiv3.apifootball.com/?action=get_players&player_name=' + textoBusca + '&APIkey=4304886204bef55c53ac21b93e8a4e9e02d6cc1dc9376db24a52f1d82bec47f8';
       console.log('URL da API:', apiUrl);
       
       const response = await axios.get(apiUrl);
@@ -29,16 +29,34 @@ export default function PesquisarAtletas({ navigation }) {
     }
   };
 
+  const styles = StyleSheet.create({
+
+    container: {
+      padding: 16,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: '#D7D7D7',
+      borderRadius: 4,
+      height: 46,
+      padding: 12,
+      marginTop: 12,
+      marginBottom: 16,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+  });
+
   return (
-    <View>
-      <Text>Pesquisa de Atletas</Text>
-      <TextInput
+    <View style={styles.container}>
+      <Text style={styles.title}>Pesquisa de Atletas</Text>
+      <TextInput style={styles.input}
         placeholder="Digite o nome do atleta"
         onChangeText={atualizarTexto}
       />
-      <TouchableOpacity onPress={buscarAtletas}>
-        <Text>Buscar</Text>
-      </TouchableOpacity>
+      <Button title="Buscar" color={'#1BC286'} onPress={buscarAtletas}/>
       <View>
         {resultado.map((atletaAtual, index) => (
           <Text key={index}>
