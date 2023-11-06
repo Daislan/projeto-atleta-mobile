@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button, Text, Image, TextInput, ScrollView, TouchableHighlight, Alert } from 'react-native';
 import axios from 'axios';
+import PainelFavoritos from './Favoritos';
 
 export default function PesquisarAtletas({ navigation }) {
   const [textoBusca, setTextoBusca] = useState('');
   const [resultado, setResultado] = useState([]);
+  const [favoritos, setFavoritos] = useState([]);
 
   const atualizarTexto = (value) => {
     setTextoBusca(value.toLowerCase());
@@ -27,6 +29,10 @@ export default function PesquisarAtletas({ navigation }) {
       console.log('Erro durante a busca:', error);
       Alert.alert('Erro durante a busca');
     }
+  };
+  
+  const adicionarAosFavoritos = (atleta) => {
+    setFavoritos([...favoritos, atleta]);
   };
 
   const styles = StyleSheet.create({
@@ -116,7 +122,7 @@ export default function PesquisarAtletas({ navigation }) {
             </View>
             </View>
             <View style={{marginTop: 12,}}>
-              <TouchableHighlight onPress={''}>
+              <TouchableHighlight onPress={() => adicionarAosFavoritos(atletaAtual)}>
                   <View style={styles.button}>
                     <Text>Adicionar aos favoritos</Text>
                   </View>
@@ -125,6 +131,7 @@ export default function PesquisarAtletas({ navigation }) {
           </View>
         ))}
       </ScrollView>
+      <PainelFavoritos favoritos={favoritos}/>
     </View>
   );
 }
