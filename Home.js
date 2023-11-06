@@ -72,6 +72,7 @@ export default function PesquisarAtletas({ navigation }) {
       padding: 10,
       borderWidth: 1,
       borderRadius: 6,
+      backgroundColor: '#FFFFFF',
     },
     buttonBusca: {
       backgroundColor: '#1BC286',
