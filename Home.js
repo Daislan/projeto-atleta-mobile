@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, Text, Image, TextInput, ScrollView, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, View, Button, Text, Image, TextInput, ScrollView, ActivityIndicator, TouchableHighlight, Alert } from 'react-native';
 import axios from 'axios';
 import PainelFavoritos from './Favoritos';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PesquisarAtletas({ navigation }) {
   const [textoBusca, setTextoBusca] = useState('');
@@ -13,32 +14,44 @@ export default function PesquisarAtletas({ navigation }) {
   };
 
   const buscarAtletas = async () => {
-    try {
-      const apiUrl = 'https://apiv3.apifootball.com/?action=get_players&player_name=' + textoBusca + '&APIkey=4304886204bef55c53ac21b93e8a4e9e02d6cc1dc9376db24a52f1d82bec47f8';
-      console.log('URL da API:', apiUrl);
-      
-      const response = await axios.get(apiUrl);
-      console.log('Resposta da API:', response.data);
-
-      if (response.data && Array.isArray(response.data)) {
-        setResultado(response.data);
-      } else {
-        setResultado([]);
+      try {
+        
+        const apiUrl = 'https://apiv3.apifootball.com/?action=get_players&player_name=' + textoBusca + '&APIkey=4304886204bef55c53ac21b93e8a4e9e02d6cc1dc9376db24a52f1d82bec47f8';
+        console.log('URL da API:', apiUrl);
+        
+        const response = await axios.get(apiUrl);
+        console.log('Resposta da API:', response.data);
+        
+        if (response.data && Array.isArray(response.data)) {
+          setResultado(response.data);
+        } else {
+          setResultado([]);
+        }
+        
+      } catch (error) {
+        console.log('Erro durante a busca:', error);
+        Alert.alert('Erro durante a busca');
       }
-    } catch (error) {
-      console.log('Erro durante a busca:', error);
-      Alert.alert('Erro durante a busca');
-    }
   };
   
   const adicionarAosFavoritos = (atleta) => {
-    setFavoritos([...favoritos, atleta]);
+    if (!favoritos.some((favorito) => favorito.player_name === atleta.player_name)) {
+       setFavoritos([...favoritos, atleta]);
+        // Faça a lógica para atualizar a lista de favoritos no estado ou onde ela está armazenada
+      } else {
+        alert('O atleta já foi adicionado!');
+        // O atleta já está na lista de favoritos, você pode mostrar uma mensagem ou fazer outra ação, se necessário.
+      }
+    
   };
+
+  
 
   const styles = StyleSheet.create({
 
     container: {
       padding: 16,
+      flex: 1,
     },
     input: {
       backgroundColor: 'white',
@@ -61,7 +74,7 @@ export default function PesquisarAtletas({ navigation }) {
       borderRadius: 8,
     },
     scrollView: {
-      marginVertical: 16,
+      marginTop: 16,
     },
     titleCard: {
       fontSize: 18,
@@ -123,16 +136,17 @@ export default function PesquisarAtletas({ navigation }) {
             </View>
             </View>
             <View style={{marginTop: 12,}}>
-              <TouchableHighlight onPress={() => adicionarAosFavoritos(atletaAtual)}>
+              <TouchableHighlight onPress={() => adicionarAosFavoritos(atletaAtual)} >
                   <View style={styles.button}>
                     <Text>Adicionar aos favoritos</Text>
                   </View>
-              </TouchableHighlight>
+                </TouchableHighlight>
             </View>
           </View>
         ))}
+        <PainelFavoritos favoritos={favoritos}/>
       </ScrollView>
-      <PainelFavoritos favoritos={favoritos}/>
+      {/* <PainelFavoritos favoritos={favoritos}/> */}
     </View>
   );
 }
