@@ -4,11 +4,12 @@ import axios from 'axios';
 import PainelFavoritos from './Favoritos';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function PesquisarAtletas({ navigation }) {
+export default function PesquisarAtletas({ navigation,}) {
   const [textoBusca, setTextoBusca] = useState('');
   const [resultado, setResultado] = useState([]);
   const [favoritos, setFavoritos] = useState([]);
-
+  const [dadosClima, setDadosClima] = useState(null);
+  
   const atualizarTexto = (value) => {
     setTextoBusca(value.toLowerCase());
   };
@@ -34,6 +35,36 @@ export default function PesquisarAtletas({ navigation }) {
       }
   };
   
+  const buscarInformacoesClima = async () => {
+    
+    try {
+      const apiUrl = 'https://api.hgbrasil.com/geoip?key=b62e6cb0';
+      const response = await axios.get(apiUrl);
+
+      console.log('Resposta da API GeoIP:', response.data);
+
+      const { region, country_name } = response.data;
+
+      // Agora, você pode usar as informações de região/estado e país para obter dados meteorológicos
+      const climaApiUrl = `https://api.hgbrasil.com/weather?key=b62e6cb0&region=${region}&country_name=${country_name}`;
+      const climaResponse = await axios.get(climaApiUrl);
+
+      console.log('Resposta da API de Clima:', climaResponse.data);
+
+      if (climaResponse.data && climaResponse.data.results && climaResponse.data.results.temp) {
+        setDadosClima(climaResponse.data.results);
+      } else {
+        setDadosClima(null);
+        console.log('Dados meteorológicos não encontrados na resposta da API de Clima.');
+      }
+
+    } catch (error) {
+      console.log('Erro durante a busca de informações de localização ou clima:', error);
+      Alert.alert('Erro durante a busca de informações de localização ou clima');
+    }
+  };
+  
+
   const adicionarAosFavoritos = (atleta) => {
     if (!favoritos.some((favorito) => favorito.player_name === atleta.player_name)) {
        setFavoritos([...favoritos, atleta]);
@@ -44,8 +75,6 @@ export default function PesquisarAtletas({ navigation }) {
       }
     
   };
-
-  
 
   const styles = StyleSheet.create({
 
@@ -110,6 +139,21 @@ export default function PesquisarAtletas({ navigation }) {
           placeholder="Digite o nome do atleta"
           onChangeText={atualizarTexto}
         />
+        <TouchableHighlight onPress={buscarInformacoesClima}>
+          <View style={styles.buttonBusca}>
+            <Text style={{ color: 'white' }}>Buscar Informações de Clima</Text>
+          </View>
+        </TouchableHighlight>
+        {dadosClima && (
+        <View style={styles.cardAtleta}>
+          <Text style={styles.titleCard}>Informações de Clima</Text>
+          <Text>Temperatura: {dadosClima.temp} C°</Text>
+          <Text>Data: {dadosClima.date}</Text>
+          <Text>Hora: {dadosClima.time}</Text>
+          <Text>Descrição: {dadosClima.description}</Text>
+          <Text>Condição Atual: {dadosClima.currently}</Text>
+          </View>
+      )}
         <TouchableHighlight onPress={buscarAtletas}>
           <View style={styles.buttonBusca}>
             <Text style={{color: 'white',}}>Buscar</Text>
