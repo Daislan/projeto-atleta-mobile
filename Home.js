@@ -102,6 +102,13 @@ export default function PesquisarAtletas({ navigation,}) {
       backgroundColor: 'white',
       borderRadius: 8,
     },
+    cardClima: {
+      marginTop: 12,
+      marginBottom: 16,
+      padding: 12,
+      backgroundColor: 'white',
+      borderRadius: 8,
+    },
     scrollView: {
       marginTop: 16,
     },
@@ -129,6 +136,12 @@ export default function PesquisarAtletas({ navigation,}) {
       borderTopRightRadius: 6,
       borderBottomRightRadius: 6,
     },
+    buttonBuscaclima: {
+      backgroundColor: '#1BC286',
+      alignItems: 'center',
+      padding: 13,
+      borderRadius: 6,
+    },
   });
 
   return (
@@ -139,13 +152,20 @@ export default function PesquisarAtletas({ navigation,}) {
           placeholder="Digite o nome do atleta"
           onChangeText={atualizarTexto}
         />
-        <TouchableHighlight onPress={buscarInformacoesClima}>
+        <TouchableHighlight onPress={buscarAtletas}>
           <View style={styles.buttonBusca}>
+            <Text style={{color: 'white',}}>Buscar</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+      <View>
+      <TouchableHighlight onPress={buscarInformacoesClima}>
+          <View style={styles.buttonBuscaclima}>
             <Text style={{ color: 'white' }}>Buscar Informações de Clima</Text>
           </View>
         </TouchableHighlight>
         {dadosClima && (
-        <View style={styles.cardAtleta}>
+        <View style={styles.cardClima}>
           <Text style={styles.titleCard}>Informações de Clima</Text>
           <Text>Temperatura: {dadosClima.temp} C°</Text>
           <Text>Data: {dadosClima.date}</Text>
@@ -154,11 +174,6 @@ export default function PesquisarAtletas({ navigation,}) {
           <Text>Condição Atual: {dadosClima.currently}</Text>
           </View>
       )}
-        <TouchableHighlight onPress={buscarAtletas}>
-          <View style={styles.buttonBusca}>
-            <Text style={{color: 'white',}}>Buscar</Text>
-          </View>
-        </TouchableHighlight>
       </View>
       <ScrollView style={styles.scrollView}>
         {resultado.map((atletaAtual, index) => (
