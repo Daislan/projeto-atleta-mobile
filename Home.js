@@ -46,7 +46,7 @@ export default function PesquisarAtletas({ navigation,}) {
       const { region, country_name } = response.data;
 
       // Agora, você pode usar as informações de região/estado e país para obter dados meteorológicos
-      const climaApiUrl = `https://api.hgbrasil.com/weather?key=b62e6cb0&region=${region}&country_name=${country_name}`;
+      const climaApiUrl = `https://api.hgbrasil.com/weather?woeid=457089`;
       const climaResponse = await axios.get(climaApiUrl);
 
       console.log('Resposta da API de Clima:', climaResponse.data);
